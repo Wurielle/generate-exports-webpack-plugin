@@ -1,5 +1,5 @@
-# generate-exports-webpack-plugin
-Generate exports for all matches in specified directories into a specified file.
+# Generate Exports Webpack Plugin
+Generate exports for all matching modules into an index file.
 
 ## Install
 ```shell
@@ -15,7 +15,7 @@ const GenerateExportsPlugin = require('@wurielle/generate-exports-webpack-plugin
  
 module.exports = {
   plugins: [
-    new GenerateExportsPlugin([ // you can provide multiple configurations
+    new GenerateExportsPlugin([
         {
             omitExtension: false,
             omitSemi: true,
@@ -27,6 +27,7 @@ module.exports = {
   ],
 }
 ```
+> **NOTE:** You can provide multiple configurations in the array passed to the plugin. I recommend using a configuration for each extension type you want to generate exports for.
 
 Which outputs in specified directories (`./src/components/index.ts`):
 ```typescript
@@ -113,17 +114,17 @@ export { default as utils } from './utils'
 
 ### `singleQuote`
 ```typescript
-// omitSemi: true - default
+// singleQuote: true - default
 export { default as utils } from './utils';
 
-// omitSemi: false
+// singleQuote: false
 export { default as utils } from "./utils";
 ```
 
 ### `filename`
 ```javascript
 {
-    filename: 'index.ts', // defaults to 'index.js'
+    filename: 'index.ts', // Defaults to 'index.js'
 }
 ```
 
@@ -133,7 +134,7 @@ export { default as utils } from "./utils";
     include: [
         '**/*.vue',
         '**/*.{js|jsx|ts|tsx}',
-    ], // defaults to []
+    ], // Defaults to []
 }
 ```
 
@@ -143,7 +144,7 @@ export { default as utils } from "./utils";
     exclude: [
         '**/index.{js|jsx|ts|tsx}',
         '**/*.d.ts',
-    ], // defaults to []
+    ], // Defaults to []
 }
 ```
 
@@ -152,8 +153,15 @@ export { default as utils } from "./utils";
 {
     directories: [
         './src/utils',
-        './src/components'
-    ], // defaults to []
+        // You can override options for a specific directory
+        [
+            './src/services',
+            {
+                exportAll: true,
+                exportAllAsAlias: false,
+            }
+        ]
+    ], // Defaults to []
 }
 ```
 
